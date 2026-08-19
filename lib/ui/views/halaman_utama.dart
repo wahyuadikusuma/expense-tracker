@@ -325,6 +325,37 @@ class _HalamanUtamaState extends State<HalamanUtama> {
     );
   }
 
+  // Helper untuk membuat item navigasi bawah dengan ikon + teks keterangan
+  Widget _buildBottomNavItem(int index, IconData icon, String label) {
+    final isSelected = _selectedIndex == index;
+    final color = isSelected ? Colors.blue.shade700 : Colors.grey.shade400;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => _onItemTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+          const SizedBox(height: 3),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> halaman = [
@@ -380,59 +411,26 @@ class _HalamanUtamaState extends State<HalamanUtama> {
       // Letak FAB pas di tengah menempel pada BottomAppBar
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      // --- BOTTOM NAVIGATION BAR DENGAN CEKUNGAN ---
+      // --- BOTTOM NAVIGATION BAR DENGAN CEKUNGAN & KETERANGAN ---
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(), // Membuat cekungan melingkar
         notchMargin: 8.0, // Jarak/ruang antara cekungan dengan tombol FAB
         color: Colors.white,
         elevation: 8,
         clipBehavior: Clip.antiAlias,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // SISI KIRI (Catatan & Ringkasan)
-            IconButton(
-              icon: Icon(
-                Icons.receipt_long_rounded,
-                color: _selectedIndex == 0 ? Colors.blue.shade700 : Colors.grey.shade400,
-                size: 28,
-              ),
-              onPressed: () => _onItemTapped(0),
-              tooltip: 'Catatan',
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.pie_chart_rounded,
-                color: _selectedIndex == 1 ? Colors.blue.shade700 : Colors.grey.shade400,
-                size: 28,
-              ),
-              onPressed: () => _onItemTapped(1),
-              tooltip: 'Ringkasan',
-            ),
-
-            // RUANG KOSONG DI TENGAH (Lebar space ini menyesuaikan dengan tombol FAB)
-            const SizedBox(width: 40),
-
-            // SISI KANAN (Anggaran & Akun)
-            IconButton(
-              icon: Icon(
-                Icons.savings_rounded,
-                color: _selectedIndex == 2 ? Colors.blue.shade700 : Colors.grey.shade400,
-                size: 28,
-              ),
-              onPressed: () => _onItemTapped(2),
-              tooltip: 'Anggaran',
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.credit_card_rounded,
-                color: _selectedIndex == 3 ? Colors.blue.shade700 : Colors.grey.shade400,
-                size: 28,
-              ),
-              onPressed: () => _onItemTapped(3),
-              tooltip: 'Akun',
-            ),
-          ],
+        child: Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildBottomNavItem(0, Icons.receipt_long_rounded, 'Catatan'),
+              _buildBottomNavItem(1, Icons.pie_chart_rounded, 'Ringkasan'),
+              const SizedBox(width: 40), // Ruang kosong untuk FAB di tengah
+              _buildBottomNavItem(2, Icons.savings_rounded, 'Anggaran'),
+              _buildBottomNavItem(3, Icons.credit_card_rounded, 'Akun'),
+            ],
+          ),
         ),
       ),
     );

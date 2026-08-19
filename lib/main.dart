@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'ui/view_models/app_view_model.dart';
 import 'ui/views/halaman_utama.dart';
 
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue.shade700,
         scaffoldBackgroundColor: Colors.grey.shade50,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          ThemeData.light().textTheme,
+        ),
       ),
       home: HalamanUtama(viewModel: appViewModel),
     );
